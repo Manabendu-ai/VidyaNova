@@ -1,0 +1,325 @@
+import { studentDirectory } from "./accounts";
+import type {
+  Assessment,
+  Assignment,
+  Mark,
+  Opportunity,
+  Profile,
+  Question,
+} from "./domain";
+export const subjects = [
+  "Machine Learning",
+  "Artificial Intelligence",
+  "Data Structures",
+  "Python Programming",
+  "DBMS",
+  "Probability and Statistics",
+  "Computer Networks",
+  "Deep Learning",
+];
+export const students: string[] = studentDirectory.map((s) => s.name);
+export const initialProfile: Profile = {
+  name: students[0],
+  usn: "1VN23AI042",
+  email: "priya.sharma@example.edu",
+  cgpa: 8.2,
+  backlogs: 0,
+  skills: "Python, Java, SQL, Data structures, Web development",
+  roles: "Software Engineer, Graduate Engineer Trainee, Data Analyst",
+  github: "",
+  linkedin: "",
+  portfolio: "",
+  resume: "Priya_Sharma_Resume.pdf",
+};
+export const topics = [
+  "Quantitative aptitude",
+  "Logical reasoning",
+  "Verbal ability",
+  "Coding fundamentals",
+  "Technical fundamentals",
+];
+export const questionSets: Question[][] = [
+  [
+    {
+      prompt: "What is 15% of 240?",
+      options: ["24", "30", "36", "42"],
+      correct: 2,
+      explanation: "Multiply 240 by 0.15 to get 36.",
+    },
+    {
+      prompt: "A and B complete a job in 6 and 3 hours. How long together?",
+      options: ["1 hour", "2 hours", "3 hours", "4 hours"],
+      correct: 1,
+      explanation: "Their combined rate is 1/6 + 1/3 = 1/2 job per hour.",
+    },
+    {
+      prompt: "Simplify the ratio 18:24.",
+      options: ["3:4", "2:3", "4:3", "1:2"],
+      correct: 0,
+      explanation: "Divide both terms by 6.",
+    },
+  ],
+  [
+    {
+      prompt: "What comes next: 2, 6, 12, 20?",
+      options: ["24", "28", "30", "32"],
+      correct: 2,
+      explanation: "The differences are 4, 6, 8, then 10.",
+    },
+    {
+      prompt: "All roses are flowers. Are all flowers necessarily roses?",
+      options: ["Yes", "No", "Only in spring", "Only wildflowers"],
+      correct: 1,
+      explanation:
+        "The premise only establishes that roses are a subset of flowers.",
+    },
+  ],
+  [
+    {
+      prompt: "Choose the correct sentence.",
+      options: [
+        "She have finished.",
+        "She has finished.",
+        "She having finished.",
+        "She finish.",
+      ],
+      correct: 1,
+      explanation: "A third-person singular subject takes “has”.",
+    },
+    {
+      prompt: "Choose the closest synonym for concise.",
+      options: ["Brief", "Unclear", "Careless", "Long"],
+      correct: 0,
+      explanation: "Concise means brief and clear.",
+    },
+  ],
+  [
+    {
+      prompt: "What is the time complexity of binary search?",
+      options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      correct: 1,
+      explanation: "Each iteration halves the remaining search space.",
+    },
+    {
+      prompt: "Which structure is last-in, first-out?",
+      options: ["Queue", "Heap", "Stack", "Set"],
+      correct: 2,
+      explanation: "A stack removes the most recently added item first.",
+    },
+  ],
+  [
+    {
+      prompt: "Which SQL clause filters grouped aggregates?",
+      options: ["WHERE", "HAVING", "ORDER BY", "LIMIT"],
+      correct: 1,
+      explanation: "HAVING filters groups after aggregation.",
+    },
+    {
+      prompt: "Which protocol provides reliable ordered delivery?",
+      options: ["UDP", "IP", "TCP", "ARP"],
+      correct: 2,
+      explanation: "TCP delivers an ordered byte stream with retransmission.",
+    },
+  ],
+];
+export const horizon = (days: number) =>
+  new Date(Date.now() + days * 86400000).toISOString();
+export const initialAssignments: Assignment[] = [
+  {
+    id: "ml-1",
+    title: "Compare two classification models",
+    subject: subjects[0],
+    section: "A",
+    deadline: horizon(6),
+    max: 30,
+    instructions:
+      "Compare logistic regression and a decision tree. Include a confusion matrix and a short discussion.",
+    published: true,
+  },
+  {
+    id: "db-1",
+    title: "Normalize a library database",
+    subject: "DBMS",
+    section: "A",
+    deadline: horizon(-3),
+    max: 20,
+    instructions:
+      "Provide the functional dependencies and decompose the relations into 3NF.",
+    published: true,
+    submission: "library.pdf",
+    mark: 17,
+    feedback: "Explain why each dependency is preserved.",
+  },
+  {
+    id: "ds-1",
+    title: "Analyze array operations",
+    subject: "Data Structures",
+    section: "A",
+    deadline: horizon(-1),
+    max: 20,
+    instructions:
+      "Compare the runtime of insertion and deletion in arrays and linked lists.",
+    published: true,
+  },
+];
+export const initialAssessments: Assessment[] = [
+  {
+    id: "mock-02",
+    title: "Aptitude Mock Test 02",
+    minutes: 15,
+    opens: horizon(-1),
+    closes: horizon(4),
+    section: "A",
+    instructions:
+      "Each question carries one point. You can flag questions and revisit them before submitting.",
+    published: true,
+    questions: questionSets.flat(),
+  },
+  {
+    id: "technical",
+    title: "Technical Fundamentals",
+    minutes: 10,
+    opens: horizon(3),
+    closes: horizon(7),
+    section: "A",
+    instructions: "Answer all questions.",
+    published: true,
+    questions: questionSets[4],
+  },
+  {
+    id: "verbal",
+    title: "Verbal Ability Checkpoint",
+    minutes: 8,
+    opens: horizon(6),
+    closes: horizon(10),
+    section: "A",
+    instructions: "Choose the best answer.",
+    published: true,
+    questions: questionSets[2],
+  },
+];
+export const initialMarks: Mark[] = [3, 4, 5].flatMap((semester) =>
+  students.flatMap((student, index) =>
+    subjects.slice(0, 6).map((subject, i) => ({
+      student,
+      semester,
+      section: studentDirectory[index].section,
+      subject,
+      internal: 30 + ((i + index) % 8),
+      quiz: 13 + (i % 5),
+      assignment: 14 + ((i + index) % 5),
+      lab: 13 + ((i + semester) % 5),
+      published: true,
+    })),
+  ),
+);
+export const opportunities: Opportunity[] = [
+  {
+    id: "nova",
+    company: "NovaTech",
+    role: "Graduate Engineer",
+    pay: "₹6–8 LPA",
+    skills: "Python, SQL",
+    cgpa: 7,
+    mode: "Hybrid",
+    duration: "Full time",
+    kind: "placement",
+    deadline: horizon(8),
+  },
+  {
+    id: "bright",
+    company: "BrightSystems",
+    role: "Associate",
+    pay: "₹5.5 LPA",
+    skills: "DBMS, Java",
+    cgpa: 8.5,
+    mode: "On-site",
+    duration: "Full time",
+    kind: "placement",
+    deadline: horizon(10),
+  },
+  {
+    id: "cloud",
+    company: "CloudPeak",
+    role: "Developer Trainee",
+    pay: "₹7 LPA",
+    skills: "JavaScript, Data structures",
+    cgpa: 7.5,
+    mode: "On-site",
+    duration: "Full time",
+    kind: "placement",
+    deadline: horizon(14),
+  },
+  {
+    id: "data",
+    company: "DataSpring",
+    role: "Machine Learning Intern",
+    pay: "₹18,000 / month",
+    skills: "Python, scikit-learn",
+    cgpa: 7,
+    mode: "Remote",
+    duration: "12 weeks",
+    kind: "internship",
+    deadline: horizon(12),
+  },
+  {
+    id: "vector",
+    company: "VectorLabs",
+    role: "Data Engineering Intern",
+    pay: "₹22,000 / month",
+    skills: "SQL, Python",
+    cgpa: 7.5,
+    mode: "Hybrid",
+    duration: "6 months",
+    kind: "internship",
+    deadline: horizon(18),
+  },
+  {
+    id: "orbit",
+    company: "Orbit AI",
+    role: "AI Research Intern",
+    pay: "₹25,000 / month",
+    skills: "PyTorch, Statistics",
+    cgpa: 8,
+    mode: "On-site",
+    duration: "16 weeks",
+    kind: "internship",
+    deadline: horizon(21),
+  },
+];
+export const problems = [
+  {
+    id: "two-sum",
+    title: "Two Sum",
+    topic: "Arrays",
+    difficulty: "Easy",
+    description:
+      "Given an array of integers and a target, return indices of two numbers that add up to the target.",
+    input: "[2, 7, 11, 15], target = 9",
+    output: "[0, 1]",
+    constraints: "Exactly one valid answer exists. Do not reuse an element.",
+    fn: "two_sum",
+  },
+  {
+    id: "reverse",
+    title: "Array Reversal",
+    topic: "Arrays",
+    difficulty: "Easy",
+    description: "Return the given array in reverse order.",
+    input: "[1, 2, 3]",
+    output: "[3, 2, 1]",
+    constraints: "The array may be empty.",
+    fn: "reverse_array",
+  },
+  {
+    id: "palindrome",
+    title: "Palindrome Checking",
+    topic: "Strings",
+    difficulty: "Easy",
+    description: "Check whether a string reads the same forward and backward.",
+    input: "racecar",
+    output: "true",
+    constraints: "Compare characters case-insensitively.",
+    fn: "is_palindrome",
+  },
+];
